@@ -26,6 +26,7 @@ echo $data[0]['nom']; ?></p>
                 <td> <a href="?controller=forum&function=edit&id=<?= $row['id_forum'] ?>" class="btn">Modifier</a></td>
                 <td>
                     <form action="?controller=forum&function=delete" method="post">
+                        <input type="hidden" name="id_utilisateur" value="<?= $data[0]['id_utilisateur']; ?>">
                         <input type="hidden" name="id" value="<?= $row['id_forum']; ?>">
                         <input type="submit" value="Supprimer" class="btn-danger">
                     </form>

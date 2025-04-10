@@ -8,6 +8,7 @@
 </textarea>
     <label for="date">Date de publication</label>
     <input type="date" id="date" name="date" value="<?= $data['date']; ?>">
-    <input type="hidden" id="id_utilisateur" name="id_utilisateur" value="<? $data['id_utilisateur'] ?>" readonly>
+    <label for="id_utilisateur">Votre ID</label>
+    <input type="text" id="id_utilisateur" name="id_utilisateur" value="<?= $data['id_utilisateur'] ?>" readonly>
     <input type="submit" value="Modifier" class="btn">
 </form>

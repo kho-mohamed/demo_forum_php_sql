@@ -1,4 +1,5 @@
 <?php
+session_start();
 //** fonction qui va afficher la page de toutes les publications. */
 function forum_controller_index()
 {
@@ -41,27 +42,47 @@ function forum_controller_edit($request)
 {
     $id = $request['id'];
     require_once(MODEL_DIR . "/forum.php");
-    $forum = forum_select_id($id);
-    // transformer tableau mutilitimentionnel en unidimentionnel
-
+    $forum = forum_edit($id);
     if ($forum) {
-        foreach ($forum as $publication) {
-            return render('forum/edit.php', $publication);
-        }
+        return render('forum/edit.php', $forum);
     } else {
         echo "publication introuvable.";
     }
 }
 
-function user_controller_update($request)
+//** fonction qui va traiter la requet de l'utilisateur et va modifier la publication dans la base de donnée
+// et va lui afficher la page de l'utilisateur avec les publications qu'il a fait. */
+function forum_controller_update($request)
 {
     require_once(MODEL_DIR . "/forum.php");
-    $forum = forum_update($request);
-    if ($forum) {
-        header('location:?controller=forum');
+    require(CONNEX_DIR);
+    foreach ($request as $key => $value) {
+        $$key = mysqli_real_escape_string($connex, $value);
+    }
+    $forumUpdate = forum_update($request);
+    if ($forumUpdate) {
+        // on va selectionner l'utilisateur et lui montrer ses publications:
+        $forum = forum_select_id($id_utilisateur);
+        render('user/show.php', $forum);
     } else {
-        echo "error";
+        echo "erreur, votre publication n'a pas été modifié.";
     }
 }
 
+//** fonction qui va traiter la requet de l'utilisateur et va supprimer la publication dans la base de donnée
+// et va lui afficher la page de l'utilisateur avec les publications qu'il a fait. */
+function forum_controller_delete($request)
+{
+    require_once(MODEL_DIR . "/forum.php");
+    $forumdelete = forum_delete($request['id']);
+    $id_utilisateur = $request['id_utilisateur'];
+    if ($forumdelete) {
+        // on va selectionner l'utilisateur et lui montrer ses publications:
+        $forum = forum_select_id($id_utilisateur);
+        render('user/show.php', $forum);
+    } else {
+        echo "erreur, votre publication n'a pas été supprimé.";
+    }
+
+}
 

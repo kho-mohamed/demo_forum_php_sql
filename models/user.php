@@ -33,7 +33,6 @@ function user_select_id($id)
 function user_auth($request)
 {
     require(CONNEX_DIR);
-    session_start();
     foreach ($request as $key => $value) {
         $$key = mysqli_real_escape_string($connex, $value);
     }
@@ -56,7 +55,7 @@ function user_auth($request)
     return false; // Échec
 }
 
-/// attente
+/// attente 
 function user_update($request)
 {
     require(CONNEX_DIR);

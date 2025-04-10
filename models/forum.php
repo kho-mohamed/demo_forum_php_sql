@@ -26,6 +26,8 @@ function forum_insert($request)
 }
 
 
+//** fonction qui va selectionner les publication par l'id de l'utilisateur et va le retourner sous forme de tableau associatif ou false si il n'existe pas */
+
 function forum_select_id($id)
 {
     require(CONNEX_DIR);
@@ -42,7 +44,22 @@ function forum_select_id($id)
     }
 }
 
+//** fonction qui va selectionner un forum par son id et va le retourner sous forme de tableau associatif ou false si il n'existe pas */
+function forum_edit($id_forum)
+{
+    require(CONNEX_DIR);
+    $sql = "SELECT * FROM forum WHERE id_forum = '$id_forum'";
+    $result = mysqli_query($connex, $sql);
+    $count = mysqli_num_rows($result);
+    if ($count == 1) {
+        $result = mysqli_fetch_array($result, MYSQLI_ASSOC);
+        return $result;
+    } else {
+        return false;
+    }
+}
 
+//** fonction qui va traiter la requet de l'utilisateur et va modifier la publication dans la base de donnée et retourne vrai ou faux */
 function forum_update($request)
 {
     require(CONNEX_DIR);
@@ -51,6 +68,18 @@ function forum_update($request)
     }
     $sql = "UPDATE forum SET titre = '$titre', date = '$date', article='$article' WHERE id_forum = '$id'";
 
+    if (mysqli_query($connex, $sql)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+//** fonction qui va traiter la requet de l'utilisateur et va supprimer la publication dans la base de donnée et retourne vrai ou faux */
+function forum_delete($id_forum)
+{
+    require(CONNEX_DIR);
+    $sql = "DELETE FROM forum WHERE id_forum = '$id_forum'";
     if (mysqli_query($connex, $sql)) {
         return true;
     } else {
