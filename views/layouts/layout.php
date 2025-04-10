@@ -11,8 +11,12 @@
 <body>
     <nav>
         <ul>
-            <li><a href="?controller=user&function=login">Page utilisateur</a></li>
-            <li><a href="?controller=user&function=create">Créer un utilisateur</a></li>
+            <li><a href="?controller=user&function=login"><?php if (isset($_SESSION)) {
+                echo "Se connecter";
+            } ?></a></li>
+            <li><a href="?controller=user&function=create"><?php if (!isset($_SESSION)) {
+                echo "Se connecter";
+            } ?></a></li>
         </ul>
     </nav>
     <main>
