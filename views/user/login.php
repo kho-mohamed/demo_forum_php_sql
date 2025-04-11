@@ -8,7 +8,7 @@ if ($data == 1) {
 ?>
 <h1>Page de connection</h1>
 <form action="?controller=user&function=auth" method="post">
-    <?= "<span class='text-danger'>" . $msg . "</span>"; ?>
+    <?= "<span class='alerte'>" . $msg . "</span>"; ?>
     <label for="username">Nom d'utilisateur</label>
     <input type="text" id="username" name="username">
     <label for="pwd">Mot de passe</label>

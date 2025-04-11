@@ -11,10 +11,22 @@
 <body>
     <nav>
         <ul>
-            <li><a href="?controller=user&function=login"><?php if (isset($_SESSION)) {
-                echo "Se connecter";
+            <li><a href="?controller=forum&function=index">Voir tous les publications du forum</a></li>
+            <li><a href="?controller=user&function=show&id=<?php if (isset($_SESSION['id'])) {
+                echo $_SESSION['id'];
+            } ?>"><?php if (isset($_SESSION['id'])) {
+                 echo "Voir mes publications";
+             } ?></a></li>
+        </ul>
+        <ul>
+            <li><a href="?controller=user&function=create"><?php if (!isset($_SESSION['id'])) {
+                echo "créer un compte";
             } ?></a></li>
-            <li><a href="?controller=user&function=create"><?php if (!isset($_SESSION)) {
+            <li><a href="?controller=user&function=logout"><?php if (isset($_SESSION['id'])) {
+                echo "Se déconnecter";
+            } ?></a></li>
+
+            <li><a href="?controller=user&function=login"><?php if (!isset($_SESSION['id'])) {
                 echo "Se connecter";
             } ?></a></li>
         </ul>

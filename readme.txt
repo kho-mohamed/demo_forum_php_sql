@@ -1,4 +1,4 @@
 utilisateur de teste:
-nom: admin1
-username: meryem.admin@cmv.qc.ca
+nom: testeur
+username: testeur@gmail.com
 password: admin1

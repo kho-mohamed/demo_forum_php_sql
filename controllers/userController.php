@@ -17,6 +17,9 @@ function user_controller_store($request)
 
 function user_controller_show($request)
 {
+    if (!isset($_SESSION)) {
+        session_start();
+    }
     $id = $request["id"];
     require(MODEL_DIR . "/user.php");
     require(MODEL_DIR . "/forum.php");
@@ -27,7 +30,7 @@ function user_controller_show($request)
         if ($forum) {
             return render("user/show.php", $forum);
         } else {
-            echo "Vous avez rien publier sur le forum";
+            echo "Vous avez rien publier sur le forum, revenez en arrière pour publier un article";
         }
     } else {
         echo 'Utilisateur introuvable';
@@ -46,6 +49,9 @@ function user_controller_login()
 // et le redirige vers la page de connexion.
 function user_controller_auth($request)
 {
+    if (!isset($_SESSION)) {
+        session_start();
+    }
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         render('user/login.php');
         exit;
@@ -61,4 +67,15 @@ function user_controller_auth($request)
         render('user/login.php', $msg = 1);
 
     }
+}
+
+
+function user_controller_logout()
+{
+    require(MODEL_DIR . '/user.php');
+    user_logout();
+    // on va rediriger l'utilisateur vers la page de connexion
+    header("location:?controller=forum&function=index");
+    exit;
+
 }

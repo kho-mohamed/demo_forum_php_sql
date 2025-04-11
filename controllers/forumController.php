@@ -1,5 +1,4 @@
 <?php
-session_start();
 //** fonction qui va afficher la page de toutes les publications. */
 function forum_controller_index()
 {
