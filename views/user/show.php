@@ -1,9 +1,18 @@
 <h1>Page Utilisateur</h1>
 <p><strong>Nom: </strong> <?php
-echo $data[0]['nom']; ?></p>
-<p><strong>Nom de l'Utilisateur: </strong> <?= $data[0]['nomUtilisateur']; ?></p>
-<p><strong>Date de naissance: </strong> <?= $data[0]['dateNaissance']; ?></p>
-<a href="?controller=forum&function=create&id=<?= $data[0]['id'] ?>" class="btn-annonce">Faire une publication</a>
+echo $data['user']['nom']; ?></p>
+<p><strong>Nom de l'Utilisateur: </strong> <?= $data['user']['nomUtilisateur']; ?></p>
+<p><strong>Date de naissance: </strong> <?= $data['user']['dateNaissance']; ?></p>
+<a href="?controller=forum&function=create&id=<?php
+if (isset($_SESSION['id'])) {
+    echo $_SESSION['id'];
+}
+?>" class="btn-annonce<?php
+if (!isset($_SESSION['id'])) {
+    echo ' disable';
+}
+?>">Faire une publication</a>
+
 
 <table>
     <thead>
@@ -17,7 +26,7 @@ echo $data[0]['nom']; ?></p>
     </thead>
     <tbody>
         <?php
-        foreach ($data as $row) {
+        foreach ($data['forum'] as $row) {
             ?>
             <tr>
                 <td class="td-btn"><?= $row['id_forum']; ?></td>
@@ -25,7 +34,7 @@ echo $data[0]['nom']; ?></p>
                 <td class="td-btn"><?= $row['date']; ?></td>
                 <td class="td-btn"> <a href="?controller=forum&function=edit&id=<?= $row['id_forum'] ?>" class="btn <?php
                   if (isset($_SESSION['id'])) {
-                      if ($data[0]['id_utilisateur'] != $_SESSION['id']) {
+                      if ($data['user']['id'] != $_SESSION['id']) {
                           echo " disable";
                       }
                   }
@@ -39,7 +48,7 @@ echo $data[0]['nom']; ?></p>
                         <input type="hidden" name="id_utilisateur" value="<?= $data[0]['id_utilisateur']; ?>">
                         <input type="hidden" name="id" value="<?= $row['id_forum']; ?>">
                         <input type="submit" value="Supprimer" class="btn-rouge <?php if (isset($_SESSION['id'])) {
-                            if ($data[0]['id_utilisateur'] != $_SESSION['id']) {
+                            if ($data['user']['id'] != $_SESSION['id']) {
                                 echo " disable";
                             }
                         }

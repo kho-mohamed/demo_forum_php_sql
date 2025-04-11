@@ -15,20 +15,22 @@ function user_controller_store($request)
     header("location:?controller=user&function=show&id=" . $user);
 }
 
-function user_controller_show($request)
+function user_controller_show($data)
 {
     if (!isset($_SESSION)) {
         session_start();
     }
-    $id = $request["id"];
     require(MODEL_DIR . "/user.php");
     require(MODEL_DIR . "/forum.php");
-
+    $id = $data["id"];
     $user = user_select_id($id);
     if ($user) {
         $forum = forum_select_id($id);
         if ($forum) {
-            return render("user/show.php", $forum);
+            $user = ['user' => $user];
+            $forum = ['forum' => $forum];
+            $data = array_merge($user, $forum);
+            return render("user/show.php", $data);
         } else {
             echo "Vous avez rien publier sur le forum, revenez en arrière pour publier un article";
         }
@@ -60,8 +62,7 @@ function user_controller_auth($request)
     require(MODEL_DIR . "/forum.php");
     $userId = user_auth($request);
     if ($userId) {
-        $forum = forum_select_id($userId);
-        return render("user/show.php", $forum);
+        return header("location:?controller=user&function=show&id=" . $userId);
     } else {
         $msg = 1;
         render('user/login.php', $msg = 1);

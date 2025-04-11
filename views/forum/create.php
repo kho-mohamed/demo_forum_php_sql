@@ -11,6 +11,6 @@
     <input type="date" id="date" name="date" value="<?= date('Y-m-d') ?>" readonly>
 
     <!-- <input type="hidden" id="id_utilisateur" name="id_utilisateur" value="<?= $data ?>" readonly> -->
-    <input type="hidden" id="id_utilisateur" name="id_utilisateur" value="<?= $data['id_utilisateur']; ?>">
+    <input type="text" id="id_utilisateur" name="id_utilisateur" value="<?php echo $data['id_utilisateur']['id']; ?>">
     <input type="submit" value="Publier" class="btn">
 </form>

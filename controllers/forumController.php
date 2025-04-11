@@ -17,7 +17,8 @@ function forum_controller_create($id)
     }
 
     // On passe l'ID utilisateur à la vue dans un tableau associatif
-    return render("forum/create.php", ['id_utilisateur' => $id_utilisateur]);
+
+    return render("forum/create.php", ['id_utilisateur' => $id]);
 }
 
 //** fonction qui va traiter la requet de l'utilisateur et va l'inserer dans la base de donnée
@@ -32,9 +33,9 @@ function forum_controller_store($request)
         echo "Erreur lors de l'insertion dans la base de données.";
         exit;
     } else {
+        $data = ['id' => $forum_id_utilisateur];
         // on va selectionner l'utilisateur et lui montrer ses publications:
-        $forum = forum_select_id($forum_id_utilisateur);
-        render('user/show.php', $forum);
+        header("location:?controller=user&function=show&id=" . $forum_id_utilisateur);
     }
 }
 function forum_controller_edit($request)
@@ -53,7 +54,9 @@ function forum_controller_edit($request)
 // et va lui afficher la page de l'utilisateur avec les publications qu'il a fait. */
 function forum_controller_update($request)
 {
-    require_once(MODEL_DIR . "/forum.php");
+    ob_start();
+
+    require(MODEL_DIR . "/forum.php");
     require(CONNEX_DIR);
     foreach ($request as $key => $value) {
         $$key = mysqli_real_escape_string($connex, $value);
@@ -61,27 +64,32 @@ function forum_controller_update($request)
     $forumUpdate = forum_update($request);
     if ($forumUpdate) {
         // on va selectionner l'utilisateur et lui montrer ses publications:
-        $forum = forum_select_id($id_utilisateur);
-        render('user/show.php', $forum);
+        header("location:?controller=user&function=show&id=" . $id_utilisateur);
+        exit;
     } else {
         echo "erreur, votre publication n'a pas été modifié.";
     }
+    ob_end_flush();
+
 }
 
 //** fonction qui va traiter la requet de l'utilisateur et va supprimer la publication dans la base de donnée
 // et va lui afficher la page de l'utilisateur avec les publications qu'il a fait. */
 function forum_controller_delete($request)
 {
-    require_once(MODEL_DIR . "/forum.php");
+    ob_start();
+    require(MODEL_DIR . "/forum.php");
     $forumdelete = forum_delete($request['id']);
-    $id_utilisateur = $request['id_utilisateur'];
+    $id = $request['id_utilisateur'];
     if ($forumdelete) {
         // on va selectionner l'utilisateur et lui montrer ses publications:
-        $forum = forum_select_id($id_utilisateur);
-        render('user/show.php', $forum);
+
+        header('location:?controller=user&function=show&id=' . $id);
+        exit;
     } else {
         echo "erreur, votre publication n'a pas été supprimé.";
     }
+    ob_end_flush();
 
 }
 
